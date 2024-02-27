@@ -12,7 +12,9 @@ console.log(anExampleVariable)
 
 // To learn more about the language, click above in "Examples" or "What's New".
 // Otherwise, get started by removing these comments and the world is your playground.
-  
+
+//  ----------------- TypeScript 基础类型 -----------------  
+
     // 布尔类型
     let isDone : boolean = false
     console.log(isDone)
@@ -108,3 +110,64 @@ console.log(anExampleVariable)
     }
     warnUser()
     warnUser2()
+
+    // Null 和 undefined 类型
+    let u:undefined = undefined
+    let n : null = null
+
+    // object 类型 表示非原始类型，就是对象类型，不是基础类型
+    // ObjectConstructor 接口定义了 Object 类的属性。
+    interface ObjectConstructor {
+        create(o: object | null):any
+    }
+    const proto = {}
+    Object.create(proto)
+    Object.create(null)
+    // Object.create(1111)// Error
+
+    // Object 接口定义了 Object.prototype 原型对象上的属性；
+    interface Object {
+        constructor: Function;
+        toString(): string;
+        toLocaleString(): string;
+        valueOf(): Object;
+        hasOwnProperty(v: PropertyKey): boolean;
+        isPrototypeOf(v: Object): boolean;
+        propertyIsEnumerable(v: PropertyKey): boolean;
+    }
+
+    // {} 类型
+    // 没有成员的对象
+    const obj = {}
+    // obj.prop = "jingbin"// 错误
+    obj.toString() // 可以
+
+    // Never 类型
+    // never 类型表示的是那些永不存在的值的类型。 
+    // 例如，never 类型是那些总是会抛出异常或根本就不会有返回值的函数表达式或箭头函数表达式的返回值类型。
+
+    // 返回never的函数必须存在无法达到的终点
+    function error(message: string) :never {
+        throw new  Error(message)
+    }
+    function infinteLoop():never {
+        while(true){}
+    }
+
+    // 在 TypeScript 中，可以利用never 类型的特性来实现全面性检查，具体示例如下
+    type Foo = string | number
+    function controlFlowAnalysisWithNever(foo:Foo) {
+        if(typeof foo === "string") {
+
+        } else if (typeof foo === "number") {
+
+        } else {
+            // foo 在这里是 never
+            const check :never = foo
+        }
+    }
+    // 使用 never 避免出现新增了联合类型没有对应的实现，目的就是写出类型绝对安全的代码。
+
+    
+
+
