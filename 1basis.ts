@@ -13,7 +13,7 @@ console.log(anExampleVariable)
 // To learn more about the language, click above in "Examples" or "What's New".
 // Otherwise, get started by removing these comments and the world is your playground.
 
-//  ----------------- TypeScript 基础类型 -----------------  
+//  ---------------------------------- TypeScript 基础类型 ----------------------------------  
 
     // 布尔类型
     let isDone : boolean = false
@@ -171,3 +171,84 @@ console.log(anExampleVariable)
     
 
 
+    //  ---------------------------------- TypeScript 断言 ----------------------------------  
+
+    // 尖括号语法
+    let someValue :any = "this is a string";
+    // let strLength :number = (<string>someValue).length // 无效
+
+    // as 语法
+    let someValue2 :any = "this is a string";
+    let strLength2 :number = (someValue as string).length
+
+    // 确定赋值断言 TypeScript 编译器就会知道该属性会被明确地赋值。
+    let x!:number
+    initialize()
+    // Variable 'x' is used before being assigned.(2454)
+    // 很明显该异常信息是说变量 x 在赋值前被使用了，要解决该问题，我们可以使用确定赋值断言：
+    console.log(2*x)// OK
+    function initialize(){
+        x = 10
+    }
+
+
+
+    //  ---------------------------------- 类型守卫 ----------------------------------  
+    
+    // in "属性名" in 对象引用
+    interface Admin{
+        name:string
+        privileges:string[]
+    }
+    interface Employee{
+        name:string
+        startDate:Date
+    }
+    type UnknowEmployee = Employee | Admin
+    function printEmployeeInformation(emp: UnknowEmployee){
+        console.log("Name: "+emp.name)
+        if ("privileges" in emp) {
+            // if (typeof emp === "Admin") {  不行，typeof 不能是对象
+            // 属性名 in 对象引用
+            console.log("privileges: "+emp.privileges)
+        }
+        if ("startDate" in emp) {
+            console.log("startDate: "+emp.startDate)
+        }
+    }
+
+    // typeof  引用 === 类型。也用于不是对象
+    // "typename" 必须是 "number"， "string"， "boolean" 或 "symbol"。 
+    // 但是 TypeScript 并不会阻止你与其它字符串比较，语言不会把那些表达式识别为类型保护。
+    function padLeft(value: string, padding: string|number) {
+        if(typeof padding === "number") {
+            return Array(padding + 1).join(" ") + value
+        }
+        if(typeof padding === "string"){
+            return padding + value
+        }
+        throw new Error(`Expected string or number, got '${padding}'.`)
+    }
+
+    // instanceof 对比的是对象
+    interface Padder {
+        getPaddingString():string
+    }
+    class SpaceRepeatingPadder implements Padder {
+        constructor(private numSpaces: number){}
+        getPaddingString(){
+            return Array(this.numSpaces + 1).join(" ")
+        }
+    }
+    let padder: Padder = new SpaceRepeatingPadder(6)
+    if(padder instanceof SpaceRepeatingPadder) {
+        // 判断是否是 SpaceRepeatingPadder，多态
+    }
+
+    // 自定义保护的类型谓词
+    function inNumber(x:any): x is number {
+        return typeof x === "number"
+    }
+    function inString(x:any): x is string {
+        return typeof x === "string"
+    }
