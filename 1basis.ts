@@ -252,3 +252,113 @@ console.log(anExampleVariable)
     function inString(x:any): x is string {
         return typeof x === "string"
     }
+
+
+    //  ---------------------------------- 联合类型和类型别名 ----------------------------------  
+    
+    // 联合类型
+    const sayHello = (name:string | undefined) => {
+        console.log(name)
+    }
+    sayHello("jingbin")
+    sayHello(undefined)
+    // 另一种用法，用来约束取值只能是其中一个
+    let num : 1 | 2 = 1
+    type EventNames = 'click' | 'scroll' | 'mousemove'
+    // 以上示例中的 1、2 或 'click' 被称为字面量类型，用来约束取值只能是某几个值中的一个。
+
+    // 可辨识联合: 1可辨识 2联合类型 3类型守卫
+    // 1可辨识
+    enum CarTrasmission{
+        Automatic = 200,
+        Manual = 300
+    }
+    interface Car{
+        vType: "car"
+        transmission: CarTrasmission
+    }
+    interface Motorcycle{
+        vType : "motorcycle"
+        make:number
+    }
+    interface Truck{
+        vType: "truck"
+        capacity: number
+    }
+    // vType 属性，称为可辨识属性，而其他的属性只跟特性的接口有关
+
+    // 2联合类型
+    type Vehicle = Motorcycle | Car | Truck
+    // Vehicle 类型的变量，可以表示不同类型的车辆
+
+    // 3类型守卫
+    const EVALUCATION_FACTOR = Math.PI
+    // 使用switch case 来实现类型守卫
+    function evaluatePrice(vehicle: Vehicle){
+        switch (vehicle.vType) {
+            case "truck":
+                return vehicle.capacity * EVALUCATION_FACTOR    
+            case "car":
+                return vehicle.transmission * EVALUCATION_FACTOR    
+            case "motorcycle":
+                return vehicle.make * EVALUCATION_FACTOR    
+        }
+    }
+    const myTruck:Truck = {vType: "truck", capacity: 9.5}
+    console.log(evaluatePrice(myTruck))
+
+    // 类型别名。给一个类型起个新名字，替代后面多个类型
+    type Message = string | string[]
+    let greet = (message:Message) => {
+
+    }
+
+    //  ---------------------------------- 交叉类型 ----------------------------------  
+    // 通过 & 符号可以将现有的多种类型叠加到一起成为一种类型，包含所有类型的特效
+    
+    // 同名基础类型属性的合并
+    type PatialPointX = {x:number,
+    // z:string
+    }
+    type Point = PatialPointX & {y:number,
+    // z:number
+    }
+    let point: Point = {
+        x:1,
+        y:1// 有2个对象里的属性了
+        // z:2
+    }
+    // 如果对象里都有z,但是类型不一样，z就会变成never类型
+
+    // 同名非基础类型属性的合并
+    interface D { d: boolean; }
+    interface E { e: string; }
+    interface F { f: number; }
+
+    interface A { x: D; }
+    interface B { x: E; }
+    interface C { x: F; }
+
+    type ABC = A & B & C;
+
+    let abc: ABC = {
+    x: {
+        d: true,
+        e: 'jingbin',
+        f: 666
+    }
+    };
+    console.log('abc:', abc);
+    // "x": {
+        // "d": true,
+        // "e": "jingbin",
+        // "f": 666
+    // }
+
+
+
+    
+
+
+    
+
