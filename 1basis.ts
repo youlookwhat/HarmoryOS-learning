@@ -357,6 +357,60 @@ console.log(anExampleVariable)
 
 
 
+
+    //  ---------------------------------- TypeScript 函数 ----------------------------------  
+    /**
+    // 箭头函数
+
+    // 1 常见语法
+    myBooks.forEach(() => console.log('reading'))
+    myBooks.forEach(title => console.log(title))
+    myBooks.forEach((title,idx,arr) => 
+        console.log(idx +"-"+title)
+        )
+    myBooks.forEach((title,idx,arr) => {
+        console.log(idx +"-"+title)
+        })
+
+    // 2 使用示例
+    function Book() {
+        let self = this;
+        self.publishDate = 2024
+        setInterval(function (){
+            console.log(self.publishDate)
+        },1000)
+    }
+
+    // 使用箭头函数 
+    function Book2(){
+        this.publishDate = 2024
+        setInterval(() => {
+            console.log(this.publishDate)
+        },1000)
+    }
+    */
+
+    // 3 参数类型和返回类型
+    function creatUserId(name:string ,id:number):string{
+        return name + id
+    }
+
+    // 4 函数类型
+    // 将方法定义一个接收值
+    let IdGenerator:(char: string, nums: number) => string
+    IdGenerator = creatUserId
+
+    // 5 可选参数以及默认参数
+    // 可选参数  加?
+    function createUserId(name: string, id:number, age?: number): string {
+        return name +  id
+    }
+    // 默认参数 直接=
+    function createUserId2(name: string = "jingbin", id:number,age?:number): string {
+        return name + id
+    }
+
+
     
 
 
