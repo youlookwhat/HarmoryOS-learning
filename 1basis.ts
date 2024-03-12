@@ -410,6 +410,66 @@ console.log(anExampleVariable)
         return name + id
     }
 
+    // 6 剩余参数
+    // function push(array, ...items) {
+    //     items.forEach(function(item)) {
+    //         array.push(item)
+    //     }
+    // }
+    // let a = []
+    // push(a,1,2,3)
+
+    // 7 函数重载
+    type Combinable = /*unresolved*/ any
+    function addApp(a:number, b:number):number;
+    function addApp(a:string, b:number):string;
+    function addApp(a: Combinable,b:Combinable) {
+        if(typeof a === 'string' || typeof b === 'string') {
+            return a.toString() + b.toString()
+        }
+        return a + b
+    }
+
+
+    //  ---------------------------------- TypeScript 数组 ----------------------------------
+    
+    // 1 数组解构
+    let x1:number
+    let y1:number
+    let z1:number
+    // let five_array = [0,1,2,3,4]
+    // [x,y,z] = five_array
+
+    // 2 数组展开运算符
+    let two_array = [0,1]
+    let five_array = [...two_array, 2,3,4]
+
+    // 3数组遍历
+    let colors:string[] = ["red","green","blue"]
+    for(let i of colors){
+        console.log(i)
+    }
+
+    //  ---------------------------------- TypeScript 对象 ----------------------------------
+
+    // 1 对象解构
+    let person = {
+        name1:"jingbin",
+        gender:"male"
+    }
+    let {name1,gender} = person
+
+    // 2 对象展开运算符
+    let person2 = {
+        name2:"jingbin",
+        gender:"male",
+        address:"wuhan"
+    }
+    // 组装对象
+    let personWithAge = {...person2, age:22}
+    // 获取除了某些项外的其他项
+    let {name2, ...rest} = person2
+
 
     
 
