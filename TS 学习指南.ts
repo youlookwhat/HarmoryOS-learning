@@ -471,6 +471,192 @@ console.log(anExampleVariable)
     let {name2, ...rest} = person2
 
 
+
+    //  ---------------------------------- TypeScript 接口 ----------------------------------
+    
+    // 1 对象的形状
+    interface Person{
+        name:string
+        age:number
+    }
+    let semlinker : Person = {
+        name: "jingbin",
+        age:31
+    }
+
+    // 2 可选|只读 属性 readonly
+    interface Person1{
+        readonly name:string
+        age?:number
+    }
+    // 数组只读
+    let a:number[] = [1,2,3,4]
+    let ro:ReadonlyArray<number> = a;
+    // ro[0] = 23// 错误的
+
+    // 3 任意属性： 使用索引签名
+    interface Person2{
+        name:string
+        age:number
+        [propName:string]: any 
+    }
+    const p1 = {name:"jingbin"}
+    const p2 = {name:"jingbin",age:31}
+    const p3 = {name:"jingbin",sex:1}// sex
+
+    // 4 接口与类型别名的区别
+    // 4.1 Objects/Functions 接口和类型别名都可以描述对象的形状或函数签名
+    // 类
+    interface Point1{
+        x:number,
+        y:number
+    }
+    interface SetPoint{
+        (x:number,y:number):void
+    }
+    // 类型别名
+    type Point2 = {
+        x:number
+        y:number
+    }
+    type SetPoint2 = (x:number,y:number) => void
+
+    // 4.2 Other Types 类型别名可以用于一些类型，比如原始类型、联合类型和元祖
+    type name = string
+    type PartialPointX = {x:number}
+    type PartialPointY = {y:number}
+    type PartialPoint = PartialPointX|PartialPointY
+    type Data = [number,string]
+
+    // 4.3 Extend 接口可以扩展别名，反之不行
+    interface PartialPointX1{x:number}
+    type PartialPointX2 = {x:number}
+    // 接口 继承接口
+    interface Point3 extends PartialPointX1{y:number}
+    // 接口 继承类型别名
+    interface Point4 extends PartialPointX2{y:number}
+    // 类型别名 继承类型别名
+    type Point5 = PartialPointX2 & {y:number}
+    // 类型别名 继承接口
+    type Point6 = PartialPointX1 & {y:number}
+
+    // 4.4 implements 类可以以相同的方式实现接口或类型别名，但类不能实现类型别名定义的联合类型
+    interface Point7{
+        x:number
+        y:number
+    }
+    class SomePoint implements Point7{
+        x = 1
+        y = 2
+    }
+    type Ponint8 = {
+        x:number
+        y:number
+    }
+    class SomePoint2 implements Ponint8{
+        x = 1
+        y = 2
+    }
+
+    // 类不能实现联合类型
+    // type PartialPoint3 = { x: number; } | { y: number; };
+    // class SomePartialPoint implements PartialPoint3 { // Error
+    //     x = 1;
+    //     y = 2;
+    // }
+
+    // 4.5 Declaration merging 类可以合并多次，会被合并为单个接口
+    interface Point8{
+        x:number
+        y:number
+    }
+    interface Point8{
+        x:number
+        y:number
+        z:number
+    }
+    const point3:Point8 = {x:1,y:2,z:3}// 有三个属性了
+
+
+    //  ---------------------------------- TypeScript 类 ----------------------------------
+
+    // 1 类的属性和方法
+    class Greeter {
+        static cname:string = "jingbin";
+        greeting:string = ""
+        age:string// 一定要有初始化，和kotlin一样。否则就用构造函数初始化
+        constructor(message:string){
+            this.age = message
+        }
+    }
+    let greeter = new Greeter("world")
+
+    // 2 ECMAScript 私有字段 #
+    class Person2 {
+        #name: string
+        constructor(name:string){
+            this.#name = name
+        }
+    }
+    let p = new Person2("jingbin")
+    // p.#name
+    // 与常规属性（甚至使用 private 修饰符声明的属性）不同，私有字段要牢记以下规则：
+        // 私有字段以 # 字符开头，有时我们称之为私有名称；
+        // 每个私有字段名称都唯一地限定于其包含的类；
+        // 不能在私有字段上使用 TypeScript 可访问性修饰符（如 public 或 private）；
+        // 私有字段不能在包含的类之外访问，甚至不能被检测到。
+    
+    
+    // 3 访问器 可以在类里面通过get set方式提供获取方法
+    // 4 类的继承
+    class Animal{
+        name:string = "飞碟"
+    }
+    class Snake extends Animal {
+        age:string = "1"
+    }
+    let s = new Snake()
+    console.log(s.age)
+    console.log(s.name)
+
+    // 5 抽象类
+    abstract class Person3{
+        constructor(public name:string){}
+        abstract say(words:string):void
+    }
+    // new Person3()//不能直接new和java一样
+    class Developer extends Person3 {
+        say(words:string) {
+            console.log(`say ${words}`)
+        }
+    }
+    new Developer("jingbin").say("ddd")
+
+    // 6 类方法的重载
+    class ProductService{
+        getProducts():void
+        getProducts(id:number):void
+
+        getProducts(id?: number){
+            if (typeof id === 'number') {
+                console.log(`获取id为 ${id} 的产品信息`)
+            } else {
+                console.log(`获取所有的产品信息`)
+            }
+        }
+    }
+    new ProductService().getProducts()
+    new ProductService().getProducts(2)
+
+
+
+
+
+
+
+
+
+
     
 
 
