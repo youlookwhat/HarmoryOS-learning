@@ -649,6 +649,55 @@ console.log(anExampleVariable)
     new ProductService().getProducts(2)
 
 
+    //  ---------------------------------- TypeScript 泛型 ----------------------------------
+
+    // 1 泛型语法
+    function identity<T,U>(value:T,message:U):T {
+        console.log(message)
+        return value
+    }
+    console.log(identity(1,"22"))
+
+    // 2 泛型接口
+    interface GenericIdentityFn<T>{
+        (arg:T):T
+    }
+
+    // 3 泛型类
+    class GenericNumber3<T> {
+        zeroValue: T|undefined;
+        add: ((x: T,y: T) => T)|undefined;
+        // constructor(s:T){
+        //     this.zeroValue = s
+        // }
+    }
+    let g = new GenericNumber3<number>()
+    g.zeroValue = 0
+    g.add = function(x,y) {
+        return x+y
+    }
+
+    // 4 泛型工具类型
+    // 4.1 typeof 获取一个变量声明或对象的类型
+    interface Person4{
+        name:string
+        age:number
+    }
+    const p5:Person4 = {name: "jingbin",age:31}
+    type  Sem = typeof p5
+
+    function toArray(x:number):Array<number> {
+        return [x]
+    }
+    type Func = typeof toArray// -> (x:number => number[])
+
+    // 4.2 keyof 获取所有类型的所有键，联合类型
+    
+
+
+
+
+
 
 
 
