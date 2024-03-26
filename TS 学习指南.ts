@@ -649,6 +649,180 @@ console.log(anExampleVariable)
     new ProductService().getProducts(2)
 
 
+    //  ---------------------------------- TypeScript 泛型 ----------------------------------
+
+    // 1 泛型语法
+    function identity<T,U>(value:T,message:U):T {
+        console.log(message)
+        return value
+    }
+    console.log(identity(1,"22"))
+
+    // 2 泛型接口
+    interface GenericIdentityFn<T>{
+        (arg:T):T
+    }
+
+    // 3 泛型类
+    class GenericNumber3<T> {
+        zeroValue: T|undefined;
+        add: ((x: T,y: T) => T)|undefined;
+        // constructor(s:T){
+        //     this.zeroValue = s
+        // }
+    }
+    let g = new GenericNumber3<number>()
+    g.zeroValue = 0
+    g.add = function(x,y) {
+        return x+y
+    }
+
+    // 4 泛型工具类型
+    // 4.1 typeof 获取一个变量声明或对象的类型
+    interface Person4{
+        name:string
+        age:number
+    }
+    const p5:Person4 = {name: "jingbin",age:31}
+    type  Sem = typeof p5
+
+    function toArray(x:number):Array<number> {
+        return [x]
+    }
+    type Func = typeof toArray// -> (x:number => number[])
+
+    // 4.2 keyof 获取所有类型的所有键，联合类型
+    interface Person5{
+        name:string
+        age:number
+    }
+    type K1 = keyof Person5 // "name" | "age"
+    type K2 = keyof Person5[]// "length" | "toString" | "pop"...
+    type K3 = keyof {[x:string]: Person5}// string | number
+
+    // 字符串索引
+    interface StringArray{
+        // keyof StringArray => string | number
+        [index:string]:string
+    }
+    // 数字索引
+    interface StringArray1{
+        // keyof  StringArray1 => number
+        [index:number]:string
+    }
+    // 为了同时支持两种索引类型，就得要求数字索引的返回值必须是字符串索引返回值的子类。
+    // 其中的原因就是当使用数值索引时，JavaScript 在执行索引操作时，会先把数值索引先转换为字符串索引。
+    // 所以 keyof { [x: string]: Person } 的结果会返回 string | number。
+
+    // 4.3 in  遍历枚举类型
+    type Keys = "a"|"b"|"c"
+    type Obj = {
+        [p in Keys]:any
+    }
+    // -> {a:any,b:any,c:any}
+
+    // 4.4 infer   声明一个类型变量并且对它进行使用
+    type ReturnType2<T> = T extends (
+        ...args: any[]
+    ) => infer R?R:any
+    // infer R 就是声明一个变量来承载传入函数签名的返回值类型，简单说就是用它取到函数返回值的类型方便之后使用。
+
+    // 4.5 extends 可以通过extends来增加泛型约束
+    interface lengthwise {
+        length:number
+    }
+    function loggingIndextity<T extends lengthwise>(arg:T):T{
+        console.log(arg.length)
+        return arg
+    }
+    // loggingIndextity(3)// error
+    // 必须包含必须的属性 length
+    loggingIndextity({length:10,value:2})
+
+    // 4.6 Partial     Partial<T>将某个类型里的属性全部变成可选项?
+    type Partial2<T> = {
+        [P in keyof T]?: T[P]
+    }
+    // 在以上代码中，首先通过 keyof T 拿到 T 的所有属性名，然后使用 in 进行遍历，将值赋给 P，最后通过 T[P] 取得相应的属性值。
+    // 中间的 ? 号，用于将所有属性变为可选。
+    interface Todo {
+        title:string
+        desc :string
+    }
+    function updateTodo(todo:Todo,fieldsToUpdate:Partial2<Todo>){
+        return {...todo, ...fieldsToUpdate}
+    }
+    const todo1 = {
+        title:"Leart TS",
+        desc:"Learn TypeScript"
+    }
+    const todo2 = updateTodo(todo1, {
+        desc:"Learn TypeScript Enum"
+    })
+    // 在上面的 updateTodo 方法中，我们利用 Partial<T> 工具类型，定义 fieldsToUpdate 的类型为 Partial<Todo>，即：
+    // {
+        // title?:string | undefined
+        // desc?: string | undefined
+    // }
+
+
+    //  ---------------------------------- TypeScript 装饰器 ----------------------------------
+    // 类装饰器
+    declare type ClassDecorator2 = <TFunction extends Function>(
+        target: TFunction
+    ) => TFunction | void;
+
+    function Greeter1(target:Function):void{
+        target.prototype.greet = function():void {
+            console.log("Hello jingbin")
+        }
+    }
+
+    // @Greeter1
+    // class Greeting2 {
+    //     constructor(){}
+    // }
+    // let myg = new Greeting2()
+    // (myg as any).greet()
+
+    // 针对于输出语
+    function Greeter2(greeting:string){
+        return function(target:Function){
+            target.prototype.greet = function():void {
+                console.log(greeting)
+            }
+        }
+    }
+
+    // @Greeter2("Hello TS")
+    // class Greeting{
+    //     constructor(){
+            
+    //     }
+    // }
+    // let myg = new Greeting2()
+    // (myg as any).greet()
+
+    // 感觉使用不到
+
+
+    //  ---------------------------------- TypeScript 4.0 新特性 ----------------------------------
+    
+
+
+
+
+
+
+    
+
+
+    
+
+
+
+
+
 
 
 

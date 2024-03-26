@@ -774,9 +774,41 @@ console.log(anExampleVariable)
 
     function Greeter1(target:Function):void{
         target.prototype.greet = function():void {
-            console.log
+            console.log("Hello jingbin")
         }
     }
+
+    // @Greeter1
+    // class Greeting2 {
+    //     constructor(){}
+    // }
+    // let myg = new Greeting2()
+    // (myg as any).greet()
+
+    // 针对于输出语
+    function Greeter2(greeting:string){
+        return function(target:Function){
+            target.prototype.greet = function():void {
+                console.log(greeting)
+            }
+        }
+    }
+
+    // @Greeter2("Hello TS")
+    // class Greeting{
+    //     constructor(){
+            
+    //     }
+    // }
+    // let myg = new Greeting2()
+    // (myg as any).greet()
+
+    // 感觉使用不到
+
+
+    //  ---------------------------------- TypeScript 4.0 新特性 ----------------------------------
+    
+
 
 
 
