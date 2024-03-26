@@ -20,3 +20,14 @@ HarmoryOS NEXT 学习笔记
 
 本项目TS学习来源于：[一份不可多得的 TS 学习指南(1.8W字) - 掘金](https://juejin.cn/post/6872111128135073806#heading-0)
 
+---
+HarmoryOS
+
+Apple M1下载(Mac(ARM)版本，3.1及以上):
+
+https://developer.harmonyos.com/cn/develop/deveco-studio/#download
+
+SDK地址：/Users/michelle/Library/Huawei/Sdk
+
+
+
