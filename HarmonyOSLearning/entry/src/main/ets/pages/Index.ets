@@ -1,4 +1,5 @@
 import router from '@ohos.router'
+
 @Entry
 @Component
 struct Index {
@@ -26,7 +27,29 @@ struct Index {
         .height("5%")
         .onClick(() => {
           console.log("000")
-          router.pushUrl({url:'pages/Second'}).then(()=>{
+          router.pushUrl({ url: 'pages/Second' }).then(() => {
+            console.log("111")
+          }).catch((err) => {
+            console.error('second page.Code is ${err.code}')
+          })
+        })
+
+        // 添加按钮
+        Button() {
+          Text("声明式UI描述")
+            .fontSize(20)
+            .fontWeight(FontWeight.Bold)
+        }
+        .type(ButtonType.Capsule)
+        .margin({
+          top: 20
+        })
+        .backgroundColor('#00ffff')
+        .width("60%")
+        .height("5%")
+        .onClick(() => {
+          console.log("000")
+          router.pushUrl({ url: 'pages/Basis' }).then(() => {
             console.log("111")
           }).catch((err) => {
             console.error('second page.Code is ${err.code}')
